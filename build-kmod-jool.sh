@@ -7,5 +7,5 @@ dnf install -y jool
 
 dkms status
 
-ls /var/lib/dkms/jool
-ls /usr/src/
+ls /var/lib/dkms/jool/4.1.11
+ls /usr/src/jool-4.1.11
