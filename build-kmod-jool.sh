@@ -7,6 +7,5 @@ dnf install -y jool
 
 dkms status
 
-ls /var/lib/dkms/
-ls /var/lib/modules/
+ls /var/lib/dkms/jool
 ls /usr/src/
