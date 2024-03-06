@@ -9,3 +9,4 @@ dkms status
 
 ls /var/lib/dkms/
 ls /var/lib/modules/
+ls /usr/src/
