@@ -2,9 +2,8 @@
 
 set -oeux pipefail
 
-wget -P /etc/yum.repos.d/ https://copr.fedorainfracloud.org/coprs/dasskelett/jool/repo/fedora-39/dasskelett-jool-fedora-39.repo
-
-rpm-ostree install jool
+dnf copr enable -y dasskelett/jool
+dnf install -y jool
 
 dkms status
 
