@@ -9,7 +9,6 @@ License:          GPL-2.0-or-later
 URL:              http://jool.mx/
 
 Source:          https://github.com/NICMx/Jool/releases/download/v%{version}/%{name}-%{version}.tar.gz
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: kmodtool
 BuildRequires: gcc
@@ -27,7 +26,7 @@ echo "PREP--------------------------------------------------"
 %{?kmodtool_check}
 
 # print kmodtool output for debugging purposes:
-kmodtool  --target %{_target_cpu}  --repo %{repo} --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
+kmodtool  --target %{_target_cpu} --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 echo "------------------------------------------------------"
 
 %setup -q -c
@@ -35,7 +34,7 @@ echo "SETUP-------------------------------------------------"
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions} ; do
   # Make a copy of the source code that was downloaded by running spectool and automatically extracted
-  %{__cp} -a %{name}-%{commit} _kmod_build_${kernel_version%%___*}
+  %{__cp} -a %{name} _kmod_build_${kernel_version%%___*}
 done
 echo "------------------------------------------------------"
 
@@ -54,11 +53,11 @@ echo "INSTALL-----------------------------------------------"
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions}; do
   # Make the directory the kernel module will be installed into in the BUILDROOT folder
-  mkdir -p %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
+  mkdir -p %{buildroot}/${kernel_version%%___*}/
   # Install the previously built kernel module (This moves and compresses the .ko file to the directory created above)
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/gcadapter_oc.ko %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/gcadapter_oc.ko %{buildroot}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
   # Make the installed kernel module executable for all users
-  chmod a+x %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/*.ko
+  chmod a+x %{buildroot}/${kernel_version%%___*}/*.ko
 done
 # AKMOD magic I guess?
 %{?akmod_install}
