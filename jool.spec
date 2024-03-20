@@ -42,7 +42,9 @@ echo "BUILD-------------------------------------------------"
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions}; do
   # Make/Build the kernel module (by running make in the directories previous copied) (This makes the .ko files in each of those respective directories)
-  make V=1 -C ${kernel_version##*___} M=${PWD}/_kmod_build_${kernel_version%%___*} VERSION=v%{version} modules
+  make V=1 -C ${kernel_version##*___} M=${PWD}/_kmod_build_${kernel_version%%___*}/build/src/mod/common VERSION=v%{version} modules
+  make V=1 -C ${kernel_version##*___} M=${PWD}/_kmod_build_${kernel_version%%___*}/build/src/mod/nat64 VERSION=v%{version} modules
+  make V=1 -C ${kernel_version##*___} M=${PWD}/_kmod_build_${kernel_version%%___*}/build/src/mod/siit VERSION=v%{version} modules
 done
 
 echo "------------------------------------------------------"
@@ -54,9 +56,9 @@ for kernel_version in %{?kernel_versions}; do
   # Make the directory the kernel module will be installed into in the BUILDROOT folder
   mkdir -p %{buildroot}/${kernel_version%%___*}/
   # Install the previously built kernel module (This moves and compresses the .ko file to the directory created above)
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_common.ko %{buildroot}/${kernel_version%%___*}/
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool.ko %{buildroot}/${kernel_version%%___*}/
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_siit.ko %{buildroot}/${kernel_version%%___*}/
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/common/jool_common.ko %{buildroot}/${kernel_version%%___*}/
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/nat64/jool.ko %{buildroot}/${kernel_version%%___*}/
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/siit/jool_siit.ko %{buildroot}/${kernel_version%%___*}/
   # Make the installed kernel module executable for all users
   chmod a+x %{buildroot}/${kernel_version%%___*}/*.ko
 done
