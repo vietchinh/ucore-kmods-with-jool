@@ -1,8 +1,6 @@
 %global buildforkernels akmod
 %global debug_package %{nil}
 
-%define repo         rpmfusion
-
 Name:             jool
 Version:          4.1.11
 Release:          1%{?dist}
@@ -17,10 +15,8 @@ BuildRequires: kmodtool
 BuildRequires: gcc
 BuildRequires: make
 
-%{!?kernels:BuildRequires: buildsys-build-rpmfusion-kerneldevpkgs-%{?buildforkernels:%{buildforkernels}}%{!?buildforkernels:current}-%{_target_cpu} }
-
 # kmodtool does its magic here
-%{expand:%(kmodtool --target %{_target_cpu} --repo %{repo} --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
+%{expand:%(kmodtool --target %{_target_cpu} --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
 %description
 This module contains the kmod module from %{URL} and overclocks the GameCube USB adapter.
@@ -50,10 +46,7 @@ for kernel_version in %{?kernel_versions}; do
   # Make/Build the kernel module (by running make in the directories previous copied) (This makes the .ko files in each of those respective directories)
   %{__make} %{?_smp_mflags} -C "${kernel_version##*___}" M=${PWD}/_kmod_build_${kernel_version%%___*} modules
 done
-# Create gcadapter_oc.conf file needed for autoloading module at boot (will be installed into /etc/modules-load.d/ in install step)
-cat > gcadapter_oc.conf <<EOF
-gcadapter_oc
-EOF
+
 echo "------------------------------------------------------"
 
 %install
@@ -67,10 +60,6 @@ for kernel_version in %{?kernel_versions}; do
   # Make the installed kernel module executable for all users
   chmod a+x %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/*.ko
 done
-# Make the directory the .conf file will be installed into in the BUILDROOT folder
-mkdir -p %{buildroot}/etc/modules-load.d/
-# Install the previously built .conf file
-install -m 755 gcadapter_oc.conf %{buildroot}/etc/modules-load.d/gcadapter_oc.conf
 # AKMOD magic I guess?
 %{?akmod_install}
 echo "------------------------------------------------------"
@@ -80,6 +69,3 @@ echo "CLEAN-------------------------------------------------"
 # Cleanup the BUILDROOT
 %{__rm} -rf %{buildroot}
 echo "------------------------------------------------------"
-
-%changelog
-
