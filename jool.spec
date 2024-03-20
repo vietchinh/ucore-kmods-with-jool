@@ -29,7 +29,7 @@ echo "PREP--------------------------------------------------"
 kmodtool  --target %{_target_cpu} --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 echo "------------------------------------------------------"
 
-%setup -q -c
+%setup
 echo "SETUP-------------------------------------------------"
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions} ; do
