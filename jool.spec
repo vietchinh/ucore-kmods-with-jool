@@ -54,7 +54,9 @@ for kernel_version in %{?kernel_versions}; do
   # Make the directory the kernel module will be installed into in the BUILDROOT folder
   mkdir -p %{buildroot}/${kernel_version%%___*}/
   # Install the previously built kernel module (This moves and compresses the .ko file to the directory created above)
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/gcadapter_oc.ko %{buildroot}/${kernel_version%%___*}/
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_common.ko %{buildroot}/${kernel_version%%___*}/
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool.ko %{buildroot}/${kernel_version%%___*}/
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_siit.ko %{buildroot}/${kernel_version%%___*}/
   # Make the installed kernel module executable for all users
   chmod a+x %{buildroot}/${kernel_version%%___*}/*.ko
 done
