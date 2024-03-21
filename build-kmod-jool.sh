@@ -6,7 +6,7 @@ mkdir -p /tmp/ublue-os-ucore-nvidia/rpmbuild/SOURCES/
 
 cd /tmp/ublue-os-ucore-nvidia/rpmbuild/SOURCES/
 
-wget https://github.com/NICMx/Jool/releases/download/v4.1.11/jool-4.1.11.tar.gz
+curl -L -O https://github.com/NICMx/Jool/releases/download/v4.1.11/jool-4.1.11.tar.gz
 tar -xzf jool-4.1.11.tar.gz
 /sbin/dkms install jool-4.1.11/
 
