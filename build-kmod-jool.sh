@@ -15,7 +15,7 @@ set -oeux pipefail
 #/sbin/dkms install --kernelsourcedir /lib/modules/${KERNEL}/build jool-4.1.11/
 
 
-
+install -D /tmp/jool/jool.spec /tmp/jool/rpmbuild/SPEC/jool.spec
 install -D /etc/pki/akmods/certs/public_key.der /tmp/jool/rpmbuild/SOURCES/public_key.der
 rpmbuild -ba \
     --define '_topdir /tmp/jool/rpmbuild' \
