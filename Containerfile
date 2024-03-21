@@ -12,7 +12,7 @@ COPY certs /tmp/certs
 COPY zfs-kmod-spec-in.patch /tmp
 
 ADD jool.spec \
-        /tmp/jool/jool.spec
+        /tmp/jool/rpmbuild/SPECS/jool.spec
 ADD ublue-os-ucore-addons.spec \
         /tmp/ublue-os-ucore-addons/ublue-os-ucore-addons.spec
 ADD ublue-os-ucore-nvidia.spec \

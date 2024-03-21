@@ -14,13 +14,18 @@ set -oeux pipefail
 #tar -xzf jool-4.1.11.tar.gz
 #/sbin/dkms install --kernelsourcedir /lib/modules/${KERNEL}/build jool-4.1.11/
 
+mkdir -p /tmp/jool/rpmbuild/SOURCES/
+
+cd /tmp/jool/rpmbuild/SOURCES/
+
+spectool -g ../SPECS/jool.spec
 
 #install -D /tmp/jool/jool.spec /tmp/jool/rpmbuild/SPECS/jool.spec
 install -D /etc/pki/akmods/certs/public_key.der /tmp/jool/rpmbuild/SOURCES/public_key.der
 rpmbuild -ba \
     --define '_topdir /tmp/jool/rpmbuild' \
     --define '%_tmppath %{_topdir}/tmp' \
-    /tmp/jool/jool.spec
+    /tmp/jool/rpmbuild/SPECS/jool.spec
 
 mkdir -p /var/cache/rpms/kmods
 
