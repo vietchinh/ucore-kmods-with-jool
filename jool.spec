@@ -62,4 +62,4 @@ done
 
 %clean
 # Cleanup the BUILDROOT
-%{__rm} -rf${RPM_BUILD_ROOT}
+%{__rm} -rf ${RPM_BUILD_ROOT}
