@@ -46,13 +46,17 @@ done
 
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions}; do
-    make install DESTDIR=${RPM_BUILD_ROOT} KMODPATH=%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix} ${kernel_version%%___*}/%{kmodinstdir_postfix}/kmodname/
+  # Make the directory the kernel module will be installed into in the BUILDROOT folder
+  # Install the previously built kernel module (This moves and compresses the .ko file to the directory created above)
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/common/jool_common.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/jool_common.ko
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/nat64/jool.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/${kernel_version%%___*}/jool.ko
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/siit/jool_siit.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/${kernel_version%%___*}/jool_siit.ko
+  # Make the installed kernel module executable for all users
 done
-chmod u+x ${RPM_BUILD_ROOT}/lib/modules/*/extra/*/*
 
 # AKMOD magic I guess?
 %{?akmod_install}
 
 %clean
 # Cleanup the BUILDROOT
-%{__rm} -rf ${RPM_BUILD_ROOT}
+%{__rm} -rf${RPM_BUILD_ROOT}
