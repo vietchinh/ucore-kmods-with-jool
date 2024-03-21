@@ -2,16 +2,25 @@
 
 set -oeux pipefail
 
-install -D /etc/pki/akmods/certs/public_key.der /tmp/ublue-os-ucore-addons/rpmbuild/SOURCES/public_key.der
-rpmbuild -ba \
-    --define '_topdir /tmp/ublue-os-ucore-addons/rpmbuild' \
-    --define '%_tmppath %{_topdir}/tmp' \
-    /tmp/ublue-os-ucore-addons/jool.spec
+mkdir -p /tmp/ublue-os-ucore-nvidia/rpmbuild/SOURCES/
 
-mkdir -p /var/cache/rpms/kmods
+cd /tmp/ublue-os-ucore-nvidia/rpmbuild/SOURCES/
 
-mv /tmp/ublue-os-ucore-addons/rpmbuild/RPMS/*/*.rpm \
-   /var/cache/rpms/kmods/
+wget https://github.com/NICMx/Jool/releases/download/v4.1.11/jool-4.1.11.tar.gz
+tar -xzf jool-4.1.11.tar.gz
+/sbin/dkms install jool-4.1.11/
+
+
+#install -D /etc/pki/akmods/certs/public_key.der /tmp/ublue-os-ucore-addons/rpmbuild/SOURCES/public_key.der
+#rpmbuild -ba \
+#    --define '_topdir /tmp/ublue-os-ucore-addons/rpmbuild' \
+#    --define '%_tmppath %{_topdir}/tmp' \
+#    /tmp/ublue-os-ucore-addons/jool.spec
+#
+#mkdir -p /var/cache/rpms/kmods
+#
+#mv /tmp/ublue-os-ucore-addons/rpmbuild/RPMS/*/*.rpm \
+#   /var/cache/rpms/kmods/
 
 #dnf copr enable -y dasskelett/jool
 #dnf install -y jool
