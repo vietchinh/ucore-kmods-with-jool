@@ -43,7 +43,7 @@ done
 
 %install
 # Cleanup the BUILDROOT
-%{__rm} -rf${RPM_BUILD_ROOT}
+%{__rm} -rf ${RPM_BUILD_ROOT}
 
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions}; do
