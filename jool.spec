@@ -10,6 +10,7 @@ License:          GPL-2.0-or-later
 URL:              http://jool.mx/
 
 Source:          https://github.com/NICMx/Jool/releases/download/v%{version}/%{prjname}-%{version}.tar.gz
+BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: kmodtool
 BuildRequires: gcc
