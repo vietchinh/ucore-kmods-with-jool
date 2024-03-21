@@ -46,7 +46,3 @@ done
 
 # AKMOD magic I guess?
 %{?akmod_install}
-
-%clean
-# Cleanup the BUILDROOT
-%{__rm} -rf ${RPM_BUILD_ROOT}
