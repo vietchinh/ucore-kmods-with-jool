@@ -2,7 +2,7 @@
 %global debug_package %{nil}
 %global prjname jool
 
-Name:             %{prjname}-kmod
+Name:             %{prjname}
 Version:          4.1.11
 Release:          1%{?dist}
 Summary:          Open Source SIIT and NAT64 Translator for Linux
