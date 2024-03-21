@@ -9,7 +9,6 @@ License:          GPL-2.0-or-later
 URL:              http://jool.mx/
 
 Source:          https://github.com/NICMx/Jool/releases/download/v%{version}/%{name}-%{version}.tar.gz
-BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: kmodtool
 BuildRequires: gcc
@@ -39,9 +38,7 @@ done
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions}; do
   # Make/Build the kernel module (by running make in the directories previous copied) (This makes the .ko files in each of those respective directories)
-  make V=1 -C ${kernel_version##*___} M=${PWD}/_kmod_build_${kernel_version%%___*}/build/src/mod/common VERSION=v%{version} modules
-  make V=1 -C ${kernel_version##*___} M=${PWD}/_kmod_build_${kernel_version%%___*}/build/src/mod/nat64 VERSION=v%{version} modules
-  make V=1 -C ${kernel_version##*___} M=${PWD}/_kmod_build_${kernel_version%%___*}/build/src/mod/siit VERSION=v%{version} modules
+  make V=1 -C ${kernel_version##*___} M=${PWD}/_kmod_build_${kernel_version%%___*} VERSION=v%{version} modules
 done
 
 
