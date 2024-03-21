@@ -8,9 +8,12 @@ mkdir -p /tmp/ublue-os-ucore-nvidia/rpmbuild/SOURCES/
 
 cd /tmp/ublue-os-ucore-nvidia/rpmbuild/SOURCES/
 
+ls /lib/modules/${KERNEL}/
+
 curl -L -O https://github.com/NICMx/Jool/releases/download/v4.1.11/jool-4.1.11.tar.gz
 tar -xzf jool-4.1.11.tar.gz
-/sbin/dkms install --kernelsourcedir /lib/modules/${KERNEL} jool-4.1.11/
+/sbin/dkms install --kernelsourcedir /lib/modules/${KERNEL}/build jool-4.1.11/
+
 
 
 #install -D /etc/pki/akmods/certs/public_key.der /tmp/ublue-os-ucore-addons/rpmbuild/SOURCES/public_key.der
