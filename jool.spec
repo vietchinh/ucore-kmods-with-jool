@@ -54,9 +54,10 @@ for kernel_version in %{?kernel_versions}; do
   install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_common.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/jool_common.ko
   install -D -m 755 _kmod_build_${kernel_version%%___*}/jool.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/jool.ko
   install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_siit.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/jool_siit.ko
+  chmod u+x ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/*
+  ls -l kmod_build_${kernel_version%%___*}/
+  ls -l ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/
 done
-
-chmod u+x ${RPM_BUILD_ROOT}/lib/modules/*/extra/*/*
 
 # AKMOD magic I guess?
 %{?akmod_install}
