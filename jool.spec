@@ -9,6 +9,7 @@ License:          GPL-2.0-or-later
 URL:              http://jool.mx/
 
 Source:          https://github.com/NICMx/Jool/releases/download/v%{version}/%{name}-%{version}.tar.gz
+BuildRoot:       %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires: kmodtool
 BuildRequires: gcc
@@ -21,24 +22,20 @@ BuildRequires: make
 This module contains the kmod module from %{URL} and overclocks the GameCube USB adapter.
 
 %prep
-echo "PREP--------------------------------------------------"
 # error out if there was something wrong with kmodtool
 %{?kmodtool_check}
 
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu} --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
-echo "------------------------------------------------------"
 
-echo "SETUP-------------------------------------------------"
+%setup -q -c -T -a 0
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions} ; do
   # Make a copy of the source code that was downloaded by running spectool and automatically extracted
   %{__cp} -a %{name}-%{version} _kmod_build_${kernel_version%%___*}
 done
-echo "------------------------------------------------------"
 
 %build
-echo "BUILD-------------------------------------------------"
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions}; do
   # Make/Build the kernel module (by running make in the directories previous copied) (This makes the .ko files in each of those respective directories)
@@ -47,27 +44,23 @@ for kernel_version in %{?kernel_versions}; do
   make V=1 -C ${kernel_version##*___} M=${PWD}/_kmod_build_${kernel_version%%___*}/build/src/mod/siit VERSION=v%{version} modules
 done
 
-echo "------------------------------------------------------"
 
 %install
-echo "INSTALL-----------------------------------------------"
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions}; do
   # Make the directory the kernel module will be installed into in the BUILDROOT folder
   mkdir -p %{buildroot}/${kernel_version%%___*}/
   # Install the previously built kernel module (This moves and compresses the .ko file to the directory created above)
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/common/jool_common.ko %{buildroot}/${kernel_version%%___*}/
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/nat64/jool.ko %{buildroot}/${kernel_version%%___*}/
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/siit/jool_siit.ko %{buildroot}/${kernel_version%%___*}/
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/common/jool_common.ko %{buildroot}/${kernel_version%%___*}/jool_common.ko
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/nat64/jool.ko %{buildroot}/${kernel_version%%___*}/jool.ko
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/siit/jool_siit.ko %{buildroot}/${kernel_version%%___*}/jool_siit.ko
   # Make the installed kernel module executable for all users
-  chmod a+x %{buildroot}/${kernel_version%%___*}/*.ko
+  chmod u+x %{buildroot}/${kernel_version%%___*}/*.ko
 done
+
 # AKMOD magic I guess?
 %{?akmod_install}
-echo "------------------------------------------------------"
 
 %clean
-echo "CLEAN-------------------------------------------------"
 # Cleanup the BUILDROOT
 %{__rm} -rf %{buildroot}
-echo "------------------------------------------------------"
