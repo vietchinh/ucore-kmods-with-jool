@@ -39,6 +39,7 @@ for kernel_version in %{?kernel_versions}; do
   make V=1 -C ${kernel_version##*___} M=${PWD}/_kmod_build_${kernel_version%%___*} VERSION=v%{version} modules
 done
 
+ls _kmod_build_${kernel_version%%___*}
 
 %install
 # For each kernel version we are targeting
