@@ -50,13 +50,14 @@ done
 
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions}; do
-  # Install the previously built kernel module (This moves and compresses the .ko file to the directory created above)
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_common.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/jool_common.ko
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/jool.ko
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_siit.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/jool_siit.ko
-  chmod u+x ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/*
-  ls -l kmod_build_${kernel_version%%___*}/
-  ls -l ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/
+    mkdir -p %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
+    ls -l kmod_build_${kernel_version%%___*}/
+    ls -l %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
+    # Install the previously built kernel module (This moves and compresses the .ko file to the directory created above)
+    install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_common.ko %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/jool_common.ko
+    install -D -m 755 _kmod_build_${kernel_version%%___*}/jool.ko %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/jool.ko
+    install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_siit.ko %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/jool_siit.ko
+    chmod a+x %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/*.ko
 done
 
 # AKMOD magic I guess?
