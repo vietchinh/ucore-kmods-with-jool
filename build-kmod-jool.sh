@@ -22,7 +22,7 @@ spectool -g ../SPECS/jool.spec
 
 #install -D /tmp/jool/jool.spec /tmp/jool/rpmbuild/SPECS/jool.spec
 install -D /etc/pki/akmods/certs/public_key.der /tmp/jool/rpmbuild/SOURCES/public_key.der
-rpmbuild -ba \
+rpmbuild -bb \
     --define '_topdir /tmp/jool/rpmbuild' \
     --define '%_tmppath %{_topdir}/tmp' \
     /tmp/jool/rpmbuild/SPECS/jool.spec
