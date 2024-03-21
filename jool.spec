@@ -27,7 +27,7 @@ TODO
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu} --kmodname %{prjname} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
-setup
+setup -c
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions} ; do
   # Make a copy of the source code that was downloaded by running spectool and automatically extracted
