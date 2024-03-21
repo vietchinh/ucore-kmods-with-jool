@@ -27,7 +27,6 @@ This module contains the kmod module from %{URL} and overclocks the GameCube USB
 # print kmodtool output for debugging purposes:
 kmodtool  --target %{_target_cpu} --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null
 
-%setup -q -c -T -a 0
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions} ; do
   # Make a copy of the source code that was downloaded by running spectool and automatically extracted
