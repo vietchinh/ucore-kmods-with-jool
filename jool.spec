@@ -18,10 +18,9 @@ BuildRequires: make
 %{expand:%(kmodtool --target %{_target_cpu} --kmodname %{name} %{?buildforkernels:--%{buildforkernels}} %{?kernels:--for-kernels "%{?kernels}"} 2>/dev/null) }
 
 %description
-This module contains the kmod module from %{URL} and overclocks the GameCube USB adapter.
+TODO
 
 %prep
-# error out if there was something wrong with kmodtool
 %{?kmodtool_check}
 
 # print kmodtool output for debugging purposes:
@@ -42,16 +41,16 @@ done
 
 
 %install
-%{__rm} -rf ${RPM_BUILD_ROOT}
-
 # For each kernel version we are targeting
 for kernel_version in %{?kernel_versions}; do
   # Make the directory the kernel module will be installed into in the BUILDROOT folder
+  mkdir -p %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/
   # Install the previously built kernel module (This moves and compresses the .ko file to the directory created above)
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/common/jool_common.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/jool_common.ko
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/nat64/jool.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/${kernel_version%%___*}/jool.ko
-  install -D -m 755 _kmod_build_${kernel_version%%___*}/build/src/mod/siit/jool_siit.ko ${RPM_BUILD_ROOT}%{kmodinstdir_prefix}/${kernel_version%%___*}/jool_siit.ko
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_common.ko %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/jool_common.ko
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool.ko %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/jool.ko
+  install -D -m 755 _kmod_build_${kernel_version%%___*}/jool_siit.ko %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/jool_siit.ko
   # Make the installed kernel module executable for all users
+  chmod a+x %{buildroot}%{kmodinstdir_prefix}/${kernel_version%%___*}/%{kmodinstdir_postfix}/*.ko
 done
 
 # AKMOD magic I guess?
